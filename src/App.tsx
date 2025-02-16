@@ -1,22 +1,22 @@
-import { Header } from "@components/Header";
-import { Footer } from "./components/Footer";
-import { HeroPost } from "./components/HeroPost";
-import { Posts } from "./components/Posts";
-function App() {
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { Home } from "@/Home";
+import { Posts } from "@/components/Posts";
+import { About } from "@/components/About";
+
+export function App() {
   return (
-    <>
-      <Header />
-      <main>
-        <section>
-          <HeroPost />
-        </section>
-        <section>
-          <Posts />
-        </section>
-      </main>
+    <Router>
+      <div>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/articles" element={<Posts />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+      </div>
       <Footer />
-    </>
+    </Router>
   );
 }
-
-export default App;
