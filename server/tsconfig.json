@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    /* Lenguaje y entorno */
+    "target": "ESNext" /* Lenguaje moderno para JavaScript */,
+    "lib": ["ESNext"] /* Bibliotecas para ES2020 */,
+    "module": "commonjs" /* Módulo CommonJS (compatible con Node.js) */,
+    "esModuleInterop": true /* Interoperabilidad con módulos CommonJS */,
+    "forceConsistentCasingInFileNames": true /* Consistencia en el uso de mayúsculas/minúsculas */,
+    "strict": true /* Activar todas las verificaciones estrictas */,
+    "skipLibCheck": true /* Saltar la verificación de archivos .d.ts */,
+    "experimentalDecorators": true, // Habilitar decoradores
+    "emitDecoratorMetadata": true, // Generar metadata para decoradoress
+
+    /* Emitir archivos */
+    "outDir": "./dist" /* Carpeta de salida para los archivos compilados */,
+    "rootDir": "./src" /* Carpeta raíz del código fuente */,
+    "sourceMap": true /* Crear mapas de código fuente para debugging */,
+    "removeComments": true /* Eliminar comentarios en los archivos emitidos */,
+
+    /* Módulos y resolución */
+    "moduleResolution": "node" /* Resolución de módulos al estilo Node.js */,
+    "resolveJsonModule": true /* Permitir importación de archivos JSON */,
+    "baseUrl": "./" /* Base para resolver rutas relativas */,
+    "paths": {
+      /* Alias para rutas */ "@/*": ["src/*"]
+    },
+
+    /* Opciones adicionales */
+    "noUnusedLocals": true /* Detectar variables locales no usadas */,
+    "noUnusedParameters": true /* Detectar parámetros no usados */,
+    "noImplicitReturns": true /* Requiere un retorno explícito en funciones */,
+    "noFallthroughCasesInSwitch": true /* Detectar fallos en switch */
+  },
+  "include": ["src"] /* Incluir la carpeta `src` en el proyecto */,
+  "exclude": [
+    "node_modules",
+    "dist"
+  ] /* Excluir la carpeta de salida y módulos */
+}

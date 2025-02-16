@@ -57,7 +57,7 @@ export default tseslint.config({
 
 - React
 - Typescript
-- Supabase
+- PostgreSQL
 - Tailwind
 
 ### Herramientas de desarrollo
