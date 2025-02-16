@@ -7,10 +7,9 @@
     "module": "ESNext",
     "skipLibCheck": true,
     // No funciona con Vite
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@components/*": ["src/components/*"]
+      "@/*": ["./src/*"]
     },
 
     /* Bundler mode */

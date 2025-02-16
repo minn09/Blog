@@ -1,11 +1,11 @@
 /** @type {import('tailwindcss').Config} */
-
 module.exports = {
+  darkMode: ["class"],
   content: [
-    "./index.html",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    // Or if using `src` directory:
-    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
   theme: {
     container: {
@@ -23,7 +23,11 @@ module.exports = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(240, 10%, 4%)",
+          DEFAULT: "#63B3ED",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
         destructive: {
@@ -46,26 +50,6 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        code: {
-          background: "#1E1E1E",
-          foreground: "#D4D4D4",
-          comment: "#6A9955",
-          keyword: "#569CD6",
-          string: "#CE9178",
-          function: "#DCDCAA",
-        },
-        success: {
-          DEFAULT: "#4CAF50",
-          foreground: "#FFFFFF",
-        },
-        warning: {
-          DEFAULT: "#FF9800",
-          foreground: "#121212",
-        },
-        error: {
-          DEFAULT: "#F44336",
-          foreground: "#FFFFFF",
-        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -74,12 +58,12 @@ module.exports = {
       },
       keyframes: {
         "accordion-down": {
-          from: { height: "0" },
+          from: { height: 0 },
           to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
           from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
+          to: { height: 0 },
         },
       },
       animation: {
@@ -88,7 +72,8 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 };
 
 export default module.exports;
+
