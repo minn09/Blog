@@ -1,6 +1,6 @@
-import { HeroSection } from "@/components/HeroSection";
-import { HeroPost } from "@/components/HeroPost";
-import { NewsletterSection } from "@/components/NewsletterSection";
+import { HeroSection } from "@/pages/HeroSection";
+import { HeroPost } from "@/pages/HeroPost";
+import { NewsletterSection } from "@/pages/NewsletterSection";
 
 export function Home() {
   return (

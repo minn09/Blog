@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Calendar } from "lucide-react";
-import type { PostProps } from "./types/PostProps";
+import type { PostProps } from "@/components/types/PostProps";
 
 export function Post({
   title,
