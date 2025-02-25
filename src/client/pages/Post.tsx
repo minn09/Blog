@@ -1,7 +1,8 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import React from "react";
+import { Card, CardContent, CardHeader } from "../../client/components/ui/card";
+import { Badge } from "../../client/components/ui/badge";
 import { Clock, Calendar } from "lucide-react";
-import type { PostProps } from "@/components/types/PostProps";
+import type { PostProps } from "../../client/types/PostProps";
 
 export function Post({
   title,
@@ -30,7 +31,7 @@ export function Post({
           </Badge>
           <div className="flex items-center text-sm text-gray-500">
             <Clock className="w-4 h-4 mr-1" />
-            {readTime}
+            {readTime.toString()}
           </div>
         </div>
         <h2 className="text-xl font-semibold mb-2 line-clamp-2 hover:text-[#63B3ED] transition-colors">

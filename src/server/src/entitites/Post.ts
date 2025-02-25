@@ -17,13 +17,13 @@ export class Posts {
   @Column("text")
   content!: string; // Contenido del post
 
-  @Column("datetime")
+  @Column("timestamp with time zone", { default: () => "CURRENT_TIMESTAMP" })
   createdAt!: Date; // Fecha de creación del post
 
   @Column("varchar")
   category!: string; // Categoría del post
 
-  @Column()
+  @Column("varchar")
   imageUrl!: string; // URL de la imagen del post
 
   @Column("int")

@@ -9,7 +9,12 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/client/*"],
+      "@components/*": ["./src/client/components/*"],
+      "@pages/*": ["./src/client/pages/*"],
+      "@lib/*": ["./src/client/lib/*"],
+      "@assets/*": ["./src/client/assets/*"],
+      "@utils/*": ["./src/client/utils/*"]
     },
 
     /* Bundler mode */

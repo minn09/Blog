@@ -1,4 +1,3 @@
-import { HiOutlineSearch } from "react-icons/hi";
 import { Link } from "@/components/ui/link";
 
 export const Header = () => {

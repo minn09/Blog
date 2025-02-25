@@ -3,6 +3,9 @@ import { useState } from "react";
 export function BlogAdmin() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [category, setCategory] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [readTime, setReadTime] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -10,13 +13,16 @@ export function BlogAdmin() {
     const response = await fetch("http://localhost:3000/api/blog", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, content }),
+      body: JSON.stringify({ title, content, category, imageUrl, readTime }),
     });
 
     if (response.ok) {
       alert("Post creado con éxito");
       setTitle("");
       setContent("");
+      setCategory("");
+      setImageUrl("");
+      setReadTime("");
     } else {
       alert("Error al crear el post");
     }
@@ -43,6 +49,26 @@ export function BlogAdmin() {
             onChange={(e) => setContent(e.target.value)}
             required
             rows={5}
+            className="w-full p-3 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+          <input
+            placeholder="Creado a las"
+            type="text"
+            className="w-full p-3 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+          <input
+            placeholder="Categoría"
+            type="text"
+            className="w-full p-3 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+          <input
+            type="text"
+            placeholder="URL de la imagen"
+            className="w-full p-3 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+          <input
+            type="text"
+            placeholder="Tiempo de lectura"
             className="w-full p-3 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           />
           <button

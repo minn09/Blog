@@ -1,6 +1,11 @@
 import { ArrowRight } from "lucide-react";
-import { Link } from "@/components/ui/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "@components/ui/link";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@components/ui/card";
 
 export function HeroPost() {
   return (

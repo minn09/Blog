@@ -28,8 +28,8 @@ AppDataSource.initialize()
 
     const defaultUser = await userRepository.findOneBy({
       name: process.env.DEFAULT_USER,
+      email: process.env.DEFAULT_EMAIL,
     });
-
 
     if (!defaultUser) {
       const defaultPassword = process.env.DEFAULT_PASSWORD;

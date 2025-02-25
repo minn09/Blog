@@ -20,6 +20,6 @@ export class Users {
   @Column("varchar")
   password!: string;
   
-  @OneToMany(() => Posts, (posts) => posts.user)
+  @OneToMany(() => Posts, (posts: Posts) => posts.user)
   posts!: Posts[];
 }
