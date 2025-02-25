@@ -4,5 +4,5 @@ export interface PostProps {
   date: string;
   category: string;
   imageUrl: string;
-  readTime: string;
+  readTime: Number;
 }
