@@ -6,7 +6,6 @@ import { Users } from "../entitites/User";
 // Obtener todos los posts
 export const getPosts = async (_req: Request, res: Response): Promise<void> => {
   try {
-    console.log("Intentando obtener posts..."); // Log simple
     const postRepository = AppDataSource.getRepository(Posts);
     const posts: Posts[] = await postRepository.find({
       select: {
@@ -19,12 +18,9 @@ export const getPosts = async (_req: Request, res: Response): Promise<void> => {
         user_id: true
       }
     });
-    
-    console.log("Posts obtenidos:", posts); // Log del resultado
     res.json(posts);
   } catch (error) {
-    console.error("Error al obtener posts:", error); // Log del error
-    res.status(500).json({ message: "Error al obtener posts", error });
+    res.status(500).json({ message: "Error fetching posts" });
   }
 };
 
@@ -36,35 +32,31 @@ export const createPost = async (
   try {
     const postRepository = AppDataSource.getRepository(Posts);
     const userRepository = AppDataSource.getRepository(Users);
-    
-    // Validate and prepare post data
-    const postData = { ...req.body };
-    
+
+    const postData = req.body;
+  
     // Get user (default or specified)
-    const userId = postData.user_id || 1;
-    const user = await userRepository.findOneBy({ user_id: userId });
+    const user_id = postData.userId || 1;
+    const user = await userRepository.findOneBy({ user_id });
     
     if (!user) {
-      res.status(404).json({ message: "Usuario no encontrado" });
+      res.status(404).json({ message: "User not found" });
       return;
     }
 
-    // Handle readTime validation
-    if (postData.readTime === '' || postData.readTime === undefined || postData.readTime === null) {
-      postData.readTime = 0;
-    } else {
-      const readTime = parseInt(postData.readTime);
-      if (isNaN(readTime)) {
-        res.status(400).json({ message: "readTime must be a valid number" });
-        return;
-      }
-      postData.readTime = readTime;
+    // Validate and normalize readTime
+    const readTime = postData.readTime !== undefined ? parseInt(postData.readTime) : 0;
+    if (isNaN(readTime)) {
+      res.status(400).json({ message: "readTime must be a valid number" });
+      return;
     }
+    postData.readTime = readTime;
 
-    // Create and save post with user relationship
+    // Create and save post with user relationship and current timestamp
     const newPost = postRepository.create({
       ...postData,
-      user: user
+      user: user,
+      created_at: new Date()
     });
     
     await postRepository.save(newPost);
@@ -77,8 +69,7 @@ export const createPost = async (
     
     res.status(201).json(savedPost);
   } catch (error) {
-    console.error("Error creating post:", error);
-    res.status(500).json({ message: "Error al crear post", error });
+    res.status(500).json({ message: "Error creating post" });
   }
 };
 
@@ -90,18 +81,35 @@ export const updatePost = async (
   try {
     const postRepository = AppDataSource.getRepository(Posts);
     const { id } = req.params;
-    const post = await postRepository.findOneBy({ post_id: parseInt(id) });
-
-    if (!post) {
-      res.status(404).json({ message: "Post no encontrado" });
+    const postId = parseInt(id);
+    
+    if (isNaN(postId)) {
+      res.status(400).json({ message: "Invalid post ID" });
       return;
+    }
+
+    const post = await postRepository.findOneBy({ post_id: postId });
+    if (!post) {
+      res.status(404).json({ message: "Post not found" });
+      return;
+    }
+
+    // Validate and normalize readTime if provided
+    if (req.body.readTime !== undefined) {
+      const readTime = parseInt(req.body.readTime);
+      if (isNaN(readTime)) {
+        res.status(400).json({ message: "readTime must be a valid number" });
+        return;
+      }
+      req.body.readTime = readTime;
     }
 
     postRepository.merge(post, req.body);
     const updatedPost = await postRepository.save(post);
+    
     res.json(updatedPost);
   } catch (error) {
-    res.status(500).json({ message: "Error al actualizar post", error });
+    res.status(500).json({ message: "Error updating post" });
   }
 };
 
@@ -113,15 +121,22 @@ export const deletePost = async (
   try {
     const postRepository = AppDataSource.getRepository(Posts);
     const { id } = req.params;
-    const result = await postRepository.delete(id);
+    const postId = parseInt(id);
 
-    if (result.affected === 0) {
-      res.status(404).json({ message: "Post no encontrado" });
+    if (isNaN(postId)) {
+      res.status(400).json({ message: "Invalid post ID" });
       return;
     }
 
-    res.json({ message: "Post eliminado exitosamente" });
+    const post = await postRepository.findOneBy({ post_id: postId });
+    if (!post) {
+      res.status(404).json({ message: "Post not found" });
+      return;
+    }
+
+    await postRepository.remove(post);
+    res.json({ message: "Post deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Error al eliminar post", error });
+    res.status(500).json({ message: "Error deleting post" });
   }
 };
