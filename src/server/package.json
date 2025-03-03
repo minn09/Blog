@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc",
-    "test": "ts-node index.test.ts",
+    "start": "tsx src/index.ts",
+    "test": "tsx src/test/index.test.ts",
     "db:init": "tsx src/data-source.ts",
     "db:test-post": "tsx src/test/createPost.test.ts",
     "db:drop": "tsx src/test/dropDatabase.test.ts"
