@@ -10,7 +10,7 @@ export function BlogAdmin() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:3000/api/blog", {
+    const response = await fetch("http://localhost:3000/api/posts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title, content, category, imageUrl, readTime }),
@@ -26,6 +26,12 @@ export function BlogAdmin() {
     } else {
       alert("Error al crear el post");
     }
+  };
+
+  const ArticleReadTime = () => {
+    const articleContent = content;
+    const wordsArticle = articleContent.length;
+    return wordsArticle;
   };
 
   return (
@@ -48,28 +54,33 @@ export function BlogAdmin() {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             required
-            rows={5}
+            rows={10}
             className="w-full p-3 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           />
-          <input
-            placeholder="Creado a las"
-            type="text"
-            className="w-full p-3 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-          />
-          <input
-            placeholder="Categoría"
-            type="text"
-            className="w-full p-3 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-          />
+          <label htmlFor="city" aria-placeholder="Categoria">
+            Categoria:
+          </label>
+          <select
+            name="city"
+            id="city"
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="">--None--</option>
+            <option value="Development">Development</option>
+            <option value="Design">Design</option>
+          </select>
           <input
             type="text"
             placeholder="URL de la imagen"
             className="w-full p-3 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+            onChange={(e) => setImageUrl(e.target.value)}
           />
           <input
+            disabled
             type="text"
             placeholder="Tiempo de lectura"
             className="w-full p-3 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+            onChange={ArticleReadTime}
           />
           <button
             type="submit"

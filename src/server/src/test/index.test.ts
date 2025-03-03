@@ -11,7 +11,7 @@ const main = async () => {
     // Crear un nuevo usuario
     const userRepository = AppDataSource.getRepository(Users);
     const newUser = userRepository.create({
-      name: "John Doe1",
+      username: "John Doe1",
       email: "john1@example.com",
       password: "123456",
     });

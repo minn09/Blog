@@ -6,6 +6,7 @@ import postRoutes from "./routes/posts";
 import { AppDataSource } from "./data-source";
 import { Users } from "./entitites/User";
 import bcrypt from "bcrypt";
+import cors from "cors";
 
 const app = express();
 const port = 3000;
@@ -18,7 +19,7 @@ AppDataSource.initialize()
     // Crear usuario predeterminado si no existe
     const userRepository = AppDataSource.getRepository(Users);
     const defaultUser = await userRepository.findOneBy({
-      name: process.env.DEFAULT_USER,
+      username: process.env.DEFAULT_USER,
     });
 
     if (!defaultUser) {
@@ -28,7 +29,7 @@ AppDataSource.initialize()
       }
       const hashedPassword = await bcrypt.hash(defaultPassword, 10);
       const newUser = userRepository.create({
-        name: process.env.DEFAULT_USER,
+        username: process.env.DEFAULT_USER,
         email: process.env.DEFAULT_EMAIL,
         password: hashedPassword,
       });
@@ -37,6 +38,12 @@ AppDataSource.initialize()
     } else {
       console.log("Usuario predeterminado ya existe");
     }
+    // CORS
+    app.use(cors({
+      origin: "http://localhost:5173",
+      methods: "GET,POST,PUT,DELETE",
+      allowedHeaders: "Content-Type"
+    }));
 
     // Middleware
     app.use(express.json());
@@ -44,6 +51,7 @@ AppDataSource.initialize()
     // Rutas
     app.use("/api/users", userRoutes);
     app.use("/api/posts", postRoutes);
+
 
     // Iniciar servidor
     app.listen(port, () => {

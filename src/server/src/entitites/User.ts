@@ -9,17 +9,17 @@ import { Posts } from "./Post";
 @Entity()
 export class Users {
   @PrimaryGeneratedColumn()
-  id!: number;
-  
+  user_id!: number;
+
   @Column("varchar", { unique: true })
-  name!: string;
-  
+  username!: string;
+
   @Column("varchar", { unique: true })
   email!: string;
-  
+
   @Column("varchar")
   password!: string;
-  
+
   @OneToMany(() => Posts, (posts: Posts) => posts.user)
   posts!: Posts[];
 }
