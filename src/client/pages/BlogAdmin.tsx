@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useEffect } from "react";
 
 export function BlogAdmin() {
   const [title, setTitle] = useState("");
@@ -28,11 +29,16 @@ export function BlogAdmin() {
     }
   };
 
-  const ArticleReadTime = () => {
-    const articleContent = content;
-    const wordsArticle = articleContent.length;
-    return wordsArticle;
+  const ArticleReadTime = (text: string): number => {
+    const wordsPerMinute = 225; // Average reading speed
+    const wordCount = text.trim().split(/\s+/).length;
+    return Math.ceil(wordCount / wordsPerMinute);
   };
+
+  useEffect(() => {
+    const calculatedReadTime = ArticleReadTime(content);
+    setReadTime(calculatedReadTime.toString());
+  }, [content]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background text-foreground">
@@ -65,7 +71,6 @@ export function BlogAdmin() {
             id="city"
             onChange={(e) => setCategory(e.target.value)}
           >
-            <option value="">--None--</option>
             <option value="Development">Development</option>
             <option value="Design">Design</option>
           </select>
@@ -80,7 +85,7 @@ export function BlogAdmin() {
             type="text"
             placeholder="Tiempo de lectura"
             className="w-full p-3 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-            onChange={ArticleReadTime}
+            onChange={(e) => setReadTime(ArticleReadTime(e.target.value).toString())}
           />
           <button
             type="submit"

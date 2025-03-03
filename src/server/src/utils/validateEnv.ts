@@ -3,7 +3,7 @@ export function validateEnv() {
     'DB_HOST',
     'DB_PORT',
     'DB_USER',
-    'DB_PASSWORD',
+    'DB_USER_PASSWORD',
     'DB_NAME',
     'DEFAULT_USER',
     'DEFAULT_PASSWORD',

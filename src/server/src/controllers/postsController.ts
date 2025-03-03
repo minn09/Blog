@@ -1,13 +1,25 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../data-source";
 import { Posts } from "../entitites/Post";
+import { Users } from "../entitites/User";
 
 // Obtener todos los posts
 export const getPosts = async (_req: Request, res: Response): Promise<void> => {
   try {
     console.log("Intentando obtener posts..."); // Log simple
     const postRepository = AppDataSource.getRepository(Posts);
-    const posts = await postRepository.find();
+    const posts: Posts[] = await postRepository.find({
+      select: {
+        post_id: true,
+        title: true,
+        content: true,
+        category: true,
+        imageUrl: true,
+        readTime: true,
+        user_id: true
+      }
+    });
+    
     console.log("Posts obtenidos:", posts); // Log del resultado
     res.json(posts);
   } catch (error) {
@@ -23,10 +35,49 @@ export const createPost = async (
 ): Promise<void> => {
   try {
     const postRepository = AppDataSource.getRepository(Posts);
-    const newPost = postRepository.create(req.body);
-    const savedPost = await postRepository.save(newPost);
+    const userRepository = AppDataSource.getRepository(Users);
+    
+    // Validate and prepare post data
+    const postData = { ...req.body };
+    
+    // Get user (default or specified)
+    const userId = postData.user_id || 1;
+    const user = await userRepository.findOneBy({ user_id: userId });
+    
+    if (!user) {
+      res.status(404).json({ message: "Usuario no encontrado" });
+      return;
+    }
+
+    // Handle readTime validation
+    if (postData.readTime === '' || postData.readTime === undefined || postData.readTime === null) {
+      postData.readTime = 0;
+    } else {
+      const readTime = parseInt(postData.readTime);
+      if (isNaN(readTime)) {
+        res.status(400).json({ message: "readTime must be a valid number" });
+        return;
+      }
+      postData.readTime = readTime;
+    }
+
+    // Create and save post with user relationship
+    const newPost = postRepository.create({
+      ...postData,
+      user: user
+    });
+    
+    await postRepository.save(newPost);
+    
+    // Fetch the saved post with user relationship
+    const savedPost = await postRepository.findOne({
+      where: { post_id: newPost.post_id },
+      relations: ["user"]
+    });
+    
     res.status(201).json(savedPost);
   } catch (error) {
+    console.error("Error creating post:", error);
     res.status(500).json({ message: "Error al crear post", error });
   }
 };
@@ -39,7 +90,7 @@ export const updatePost = async (
   try {
     const postRepository = AppDataSource.getRepository(Posts);
     const { id } = req.params;
-    const post = await postRepository.findOneBy({ id: parseInt(id) });
+    const post = await postRepository.findOneBy({ post_id: parseInt(id) });
 
     if (!post) {
       res.status(404).json({ message: "Post no encontrado" });

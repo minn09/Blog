@@ -4,6 +4,7 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  RelationId,
 } from "typeorm";
 import { Users } from "./User";
 
@@ -31,6 +32,9 @@ export class Posts {
   readTime!: number; // Tiempo de lectura estimado del post
 
   @ManyToOne(() => Users, (user) => user.posts)
-  @JoinColumn({ name: "user_id" }) // Se usará la columna "user_id" en la BD
+  @JoinColumn({ name: "user_id" })
   user!: Users;
+
+  @Column("int", { nullable: true })
+  user_id!: number; // Foreign key column for user relationship
 }
